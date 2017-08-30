@@ -9,6 +9,7 @@ Thumbs.db
 plugins.local/*
 themes.local/*
 config.php
+update_daemon2.service
 feed-icons/*
 cache/*/*
 lock/*
