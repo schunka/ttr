@@ -2041,8 +2041,10 @@ function updateFloatingTitle(unread_only) {
 			}
 
 			$("floatingTitle").style.marginRight = hf.offsetWidth - child.offsetWidth + "px";
-			if (header.offsetTop + header.offsetHeight < hf.scrollTop + $("floatingTitle").offsetHeight - 5 &&
-				child.offsetTop + child.offsetHeight >= hf.scrollTop + $("floatingTitle").offsetHeight - 5)
+			//if (header.offsetTop + header.offsetHeight < hf.scrollTop + $("floatingTitle").offsetHeight - 5 &&
+			//	child.offsetTop + child.offsetHeight >= hf.scrollTop + $("floatingTitle").offsetHeight - 5)
+            if (child.offsetTop < hf.scrollTop - header.offsetHeight &&
+                    child.offsetTop + child.offsetHeight - hf.scrollTop > header.offsetHeight)
 				$("floatingTitle").style.visibility = "visible";
 			else
 				$("floatingTitle").style.visibility = "hidden";
