@@ -575,9 +575,9 @@
 			$doc->loadHTML($html);
 			$xpath = new DOMXPath($doc);
 
-			$base = $xpath->query('/html/head/base');
+			$base = $xpath->query('/html/head/base[@href]');
 			foreach ($base as $b) {
-				$url = $b->getAttribute("href");
+				$url = rewrite_relative_url($url, $b->getAttribute("href"));
 				break;
 			}
 
@@ -2511,6 +2511,36 @@
 			return "data:image/$ext;base64," . base64_encode(file_get_contents($filename));
 		} else {
 			return "";
+		}
+	}
+
+	/*	this is essentially a wrapper for readfile() which allows plugins to hook
+		output with httpd-specific "fast" implementation i.e. X-Sendfile or whatever else
+
+		hook function should return true if request was handled (or at least attempted to)
+
+		note that this can be called without user context so the plugin to handle this
+		should be loaded systemwide in config.php */
+	function send_local_file($filename) {
+		if (file_exists($filename)) {
+			$tmppluginhost = new PluginHost();
+
+			$tmppluginhost->load(PLUGINS, PluginHost::KIND_SYSTEM);
+			$tmppluginhost->load_data();
+
+			foreach ($tmppluginhost->get_hooks(PluginHost::HOOK_SEND_LOCAL_FILE) as $plugin) {
+				if ($plugin->hook_send_local_file($filename)) return true;
+			}
+
+			$mimetype = mime_content_type($filename);
+			header("Content-type: $mimetype");
+
+			$stamp = gmdate("D, d M Y H:i:s", filemtime($filename)) . " GMT";
+			header("Last-Modified: $stamp", true);
+
+			return readfile($filename);
+		} else {
+			return false;
 		}
 	}
 
