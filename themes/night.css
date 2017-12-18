@@ -93,12 +93,12 @@ body.claro.ttrss_main div.cdm.expandable.Selected {
 
 body.claro.ttrss_main div.cdm.expanded.Unread div.cdmHeader a.title,
 body.claro.ttrss_main div.cdm.expandable.Unread a.title {
-	color : #ccc;
+	color : #eee;
 }
 
 body.claro.ttrss_main div.cdm.expanded div.cdmHeader a.title,
 body.claro.ttrss_main div.cdm.expandable a.title {
-	color : #aaa;
+	color : #666;
 }
 
 body.claro.ttrss_main .cdm.expandable.active,
